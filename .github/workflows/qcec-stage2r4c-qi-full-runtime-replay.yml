@@ -1,0 +1,207 @@
+name: QCEC Stage 2R4C Runner Context Repair and Authoritative Replay
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - runtime/qi/vendor/conda-explicit-replay.lock.txt
+      - runtime/qi/vendor/pip-freeze.txt
+      - scripts/qcec_stage2r4b_qi_full_runtime_replay.py
+      - .github/workflows/qcec-stage2r4c-qi-full-runtime-replay.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qi-full-frozen-runtime-replay:
+    runs-on: ubuntu-latest
+    env:
+      DEPENDENCY_RESOLUTION_PERFORMED: "0"
+      VERSION_RESELECTION_PERFORMED: "0"
+      PROVIDER_AUTH_ATTEMPTED: "0"
+      BACKEND_QUERY_ATTEMPTED: "0"
+      SIMULATOR_JOBS_CREATED: "0"
+      HARDWARE_JOBS_CREATED: "0"
+      SECRETS_READ: "0"
+      SECRETS_ADDED: "0"
+      STAGE3A_STARTED: "FALSE"
+    steps:
+      - name: Check out the public replay repository
+        uses: actions/checkout@v5
+
+      - name: Materialize runner-local paths
+        shell: bash
+        run: |
+          echo "QCEC_ENV_PREFIX=${RUNNER_TEMP}/qcec-stage2r4c-qi" >> "$GITHUB_ENV"
+          echo "QCEC_BASE_SNAPSHOT=${RUNNER_TEMP}/qcec-stage2r4c-base.json" >> "$GITHUB_ENV"
+
+      - name: Verify both frozen layer inputs
+        run: python scripts/qcec_stage2r4b_qi_full_runtime_replay.py preflight
+
+      - name: Install Micromamba transport only
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          init-shell: none
+          generate-run-shell: false
+          cache-environment: false
+          cache-downloads: false
+          post-cleanup: all
+
+      - name: Replay the exact frozen Conda base
+        shell: bash
+        run: |
+          set +e
+          micromamba create --yes \
+            --prefix "${QCEC_ENV_PREFIX}" \
+            --file runtime/qi/vendor/conda-explicit-replay.lock.txt \
+            --no-deps
+          status=$?
+          set -e
+          if [ "${status}" -ne 0 ]; then
+            python scripts/qcec_stage2r4b_qi_full_runtime_replay.py emit-stop \
+              --verdict STOP_QCEC_STAGE2R4B_QI_CONDA_FROZEN_BASE_REPLAY_FAILED \
+              --reason "Micromamba could not create the environment from the frozen explicit URLs."
+            exit 2
+          fi
+
+      - name: Record and verify the pre-pip Conda base
+        run: >-
+          python scripts/qcec_stage2r4b_qi_full_runtime_replay.py snapshot-base
+          --conda-prefix "${QCEC_ENV_PREFIX}"
+          --snapshot "${QCEC_BASE_SNAPSHOT}"
+
+      - name: Install the frozen pip application layer without resolution
+        shell: bash
+        run: |
+          set +e
+          micromamba run --prefix "${QCEC_ENV_PREFIX}" \
+            python -m pip install \
+            --no-deps \
+            --only-binary=:all: \
+            --disable-pip-version-check \
+            -r runtime/qi/vendor/pip-freeze.txt
+          status=$?
+          set -e
+          if [ "${status}" -ne 0 ]; then
+            python scripts/qcec_stage2r4b_qi_full_runtime_replay.py emit-stop \
+              --verdict STOP_QCEC_STAGE2R4B_QI_FROZEN_PIP_ARTIFACT_INSTALL_FAILED \
+              --reason "An exact frozen pip package had no compatible binary artifact."
+            exit 2
+          fi
+
+      - name: Audit identity, pip check, versions, and imports
+        run: >-
+          micromamba run --prefix "${QCEC_ENV_PREFIX}"
+          python scripts/qcec_stage2r4b_qi_full_runtime_replay.py finalize
+          --conda-prefix "${QCEC_ENV_PREFIX}"
+          --snapshot "${QCEC_BASE_SNAPSHOT}"
+
+      - name: Prove the zero-side-effect boundary
+        if: always()
+        shell: bash
+        run: |
+          printf '%s\n' \
+            "DEPENDENCY_RESOLUTION_PERFORMED=${DEPENDENCY_RESOLUTION_PERFORMED}" \
+            "VERSION_RESELECTION_PERFORMED=${VERSION_RESELECTION_PERFORMED}" \
+            "PROVIDER_AUTH_ATTEMPTED=${PROVIDER_AUTH_ATTEMPTED}" \
+            "BACKEND_QUERY_ATTEMPTED=${BACKEND_QUERY_ATTEMPTED}" \
+            "SIMULATOR_JOBS_CREATED=${SIMULATOR_JOBS_CREATED}" \
+            "HARDWARE_JOBS_CREATED=${HARDWARE_JOBS_CREATED}" \
+            "SECRETS_READ=${SECRETS_READ}" \
+            "SECRETS_ADDED=${SECRETS_ADDED}" \
+            "STAGE3A_STARTED=${STAGE3A_STARTED}"
+          test "${DEPENDENCY_RESOLUTION_PERFORMED}" = "0"
+          test "${VERSION_RESELECTION_PERFORMED}" = "0"
+          test "${PROVIDER_AUTH_ATTEMPTED}" = "0"
+          test "${BACKEND_QUERY_ATTEMPTED}" = "0"
+          test "${SIMULATOR_JOBS_CREATED}" = "0"
+          test "${HARDWARE_JOBS_CREATED}" = "0"
+          test "${SECRETS_READ}" = "0"
+          test "${SECRETS_ADDED}" = "0"
+          test "${STAGE3A_STARTED}" = "FALSE"
+
+      - name: Write the Stage 2R4C wrapper result
+        if: always()
+        shell: bash
+        env:
+          PARENT_STAGE2R4B_STOP: STOP_QCEC_STAGE2R4B_QI_AUTHORITATIVE_EXECUTION_FAILED
+          PARENT_RUN_ID: "35401708774"
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          result_dir = Path("runtime/qi/replay")
+          result_dir.mkdir(parents=True, exist_ok=True)
+          underlying_path = result_dir / "QCEC_STAGE2R4B_REPLAY_RESULT.json"
+          if underlying_path.is_file():
+              underlying = json.loads(underlying_path.read_text(encoding="utf-8"))
+              underlying_verdict = underlying.get("verdict", "UNAVAILABLE")
+          else:
+              underlying_verdict = "UNAVAILABLE"
+
+          runner_temp = os.environ.get("RUNNER_TEMP", "")
+          runner_context_repair = (
+              os.environ.get("QCEC_ENV_PREFIX")
+              == f"{runner_temp}/qcec-stage2r4c-qi"
+              and os.environ.get("QCEC_BASE_SNAPSHOT")
+              == f"{runner_temp}/qcec-stage2r4c-base.json"
+          )
+          underlying_pass = (
+              underlying_verdict
+              == "PASS_QCEC_STAGE2R4B_QI_FULL_FROZEN_RUNTIME_REPLAY"
+          )
+          if not runner_context_repair:
+              verdict = (
+                  "STOP_QCEC_STAGE2R4C_AUTHORITATIVE_EXECUTION_INFRASTRUCTURE_FAILED"
+              )
+          elif underlying_pass:
+              verdict = (
+                  "PASS_QCEC_STAGE2R4C_RUNNER_CONTEXT_REPAIR_AND_AUTHORITATIVE_REPLAY"
+              )
+          else:
+              verdict = "STOP_QCEC_STAGE2R4C_UNDERLYING_FROZEN_REPLAY_FAILED"
+          wrapper = {
+              "PROTOCOL_ID": (
+                  "QCEC Stage 2R4C — Runner-Context Repair and "
+                  "Authoritative Frozen Runtime Replay"
+              ),
+              "PARENT_STAGE2R4B_STOP": os.environ["PARENT_STAGE2R4B_STOP"],
+              "PARENT_EXECUTION_COMMIT": (
+                  "3fc5c8e11e9f20fbc7524c0977b749429a4a151d"
+              ),
+              "PARENT_RUN_ID": os.environ["PARENT_RUN_ID"],
+              "EXECUTION_COMMIT": os.environ.get("GITHUB_SHA"),
+              "RUN_ID": os.environ.get("GITHUB_RUN_ID"),
+              "JOB_CREATED": True,
+              "RUNNER_CONTEXT_REPAIR": (
+                  "PASS" if runner_context_repair else "FAIL"
+              ),
+              "UNDERLYING_REPLAY_VERDICT": underlying_verdict,
+              "VERDICT": verdict,
+          }
+          (result_dir / "QCEC_STAGE2R4C_WRAPPER_RESULT.json").write_text(
+              json.dumps(wrapper, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+              encoding="utf-8",
+              newline="\n",
+          )
+          lines = [f"{key}={value}" for key, value in wrapper.items()]
+          (result_dir / "QCEC_STAGE2R4C_WRAPPER_RESULT.txt").write_text(
+              "\n".join(lines) + "\n",
+              encoding="utf-8",
+              newline="\n",
+          )
+          print("\n".join(lines))
+          PY
+
+      - name: Upload the authoritative replay outputs
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: qcec-stage2r4c-qi-full-runtime-replay
+          path: runtime/qi/replay/
+          if-no-files-found: error
+          retention-days: 90
