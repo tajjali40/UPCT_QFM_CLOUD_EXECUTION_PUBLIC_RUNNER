@@ -1,0 +1,28 @@
+{
+  "backend_query_attempted": 0,
+  "hardware_jobs_created": 0,
+  "import_probe": "PASS",
+  "imports": {
+    "qiskit": "PASS",
+    "qiskit-aer": "PASS",
+    "qiskit-ibm-runtime": "PASS"
+  },
+  "machine": "x86_64",
+  "package_versions": {
+    "qiskit": "2.5.2",
+    "qiskit-aer": "0.17.2",
+    "qiskit-ibm-runtime": "0.47.0"
+  },
+  "parent_stage2_stop_commit": "b8252c9e1f05579c94705d6ef338dbda283f33c5",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "protocol_id": "UPCT-BPDA-QFM-QCEC-STAGE2R1-v1.0",
+  "provider_auth_attempted": 0,
+  "provider_runtime": "ibm",
+  "python": "3.11.16",
+  "requirements_in_sha256": "4a5aea5b3e88a46bf99818c1876b897c9acd2169ed2c6ccd2445487449339868",
+  "requirements_lock_sha256": "2a8c3e7231c6b1b21cf17ce0d52ad541f96f376e84f219986794388e0b98fa25",
+  "secrets_added": 0,
+  "secrets_read": 0,
+  "system": "Linux",
+  "workflow_commit_sha": "a4d717cb895d936e062e4e91790de8e8dda652ac"
+}
