@@ -1,0 +1,396 @@
+{
+  "PROTOCOL_ID": "QCEC Stage 2R4A — QI Frozen Pip-Layer Replay Audit",
+  "QI_ORIGINAL_EXPLICIT_LOCK_SHA256": "7899ecaada6b1621ac66675761de62e6f63ef61453c608654362ad28c5f860fa",
+  "QI_ORIGINAL_PIP_FREEZE_SHA256": "497bbbd4c3f05a2df7c34d2b2c637038ab2e43ecde2a05d3cef32c45eec20586",
+  "QI_REPLAY_LOCK_SHA256": "5fc020152a58f2f48853d6700eb629ef991f1e26820bbb37d6e9b8dab6f27780",
+  "ancestry": "STOP_QCEC_STAGE2R3_QI_FROZEN_RUNTIME_REPLAY_FAILED",
+  "audit_git_commit": null,
+  "counts": {
+    "DIRECT_URL_COUNT": 0,
+    "EDITABLE_COUNT": 0,
+    "ENVIRONMENT_DEPENDENT_COUNT": 0,
+    "EXACT_PIN_COUNT": 45,
+    "LOCAL_ABSOLUTE_PATH_COUNT": 0,
+    "LOCAL_PATH_COUNT": 0,
+    "LOCAL_RELATIVE_PATH_COUNT": 0,
+    "TOTAL_ENTRY_COUNT": 45,
+    "UNPINNED_COUNT": 0,
+    "VCS_COUNT": 0
+  },
+  "entries": [
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "aiohappyeyeballs==2.7.1",
+      "line_number": 1,
+      "normalized_name": "aiohappyeyeballs",
+      "version": "2.7.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "aiohttp==3.14.3",
+      "line_number": 2,
+      "normalized_name": "aiohttp",
+      "version": "3.14.3"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "aiohttp-retry==2.9.1",
+      "line_number": 3,
+      "normalized_name": "aiohttp-retry",
+      "version": "2.9.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "aiosignal==1.4.0",
+      "line_number": 4,
+      "normalized_name": "aiosignal",
+      "version": "1.4.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "annotated-doc==0.0.5",
+      "line_number": 5,
+      "normalized_name": "annotated-doc",
+      "version": "0.0.5"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "annotated-types==0.8.0",
+      "line_number": 6,
+      "normalized_name": "annotated-types",
+      "version": "0.8.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "attrs==26.1.0",
+      "line_number": 7,
+      "normalized_name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "certifi==2026.7.22",
+      "line_number": 8,
+      "normalized_name": "certifi",
+      "version": "2026.7.22"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "charset-normalizer==3.5.1",
+      "line_number": 9,
+      "normalized_name": "charset-normalizer",
+      "version": "3.5.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "colorama==0.4.6",
+      "line_number": 10,
+      "normalized_name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "dill==0.4.1",
+      "line_number": 11,
+      "normalized_name": "dill",
+      "version": "0.4.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "frozenlist==1.8.0",
+      "line_number": 12,
+      "normalized_name": "frozenlist",
+      "version": "1.8.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "idna==3.20",
+      "line_number": 13,
+      "normalized_name": "idna",
+      "version": "3.20"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "libqasm==1.2.1",
+      "line_number": 14,
+      "normalized_name": "libqasm",
+      "version": "1.2.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "markdown-it-py==4.2.0",
+      "line_number": 15,
+      "normalized_name": "markdown-it-py",
+      "version": "4.2.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "mdurl==0.1.2",
+      "line_number": 16,
+      "normalized_name": "mdurl",
+      "version": "0.1.2"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "multidict==6.9.0",
+      "line_number": 17,
+      "normalized_name": "multidict",
+      "version": "6.9.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "networkx==3.6.1",
+      "line_number": 18,
+      "normalized_name": "networkx",
+      "version": "3.6.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "numpy==2.5.3",
+      "line_number": 19,
+      "normalized_name": "numpy",
+      "version": "2.5.3"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "oauthlib==3.3.1",
+      "line_number": 20,
+      "normalized_name": "oauthlib",
+      "version": "3.3.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "opensquirrel==0.9.1",
+      "line_number": 21,
+      "normalized_name": "opensquirrel",
+      "version": "0.9.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "propcache==0.5.4",
+      "line_number": 22,
+      "normalized_name": "propcache",
+      "version": "0.5.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "pydantic==2.13.4",
+      "line_number": 23,
+      "normalized_name": "pydantic",
+      "version": "2.13.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "pydantic-settings==2.15.0",
+      "line_number": 24,
+      "normalized_name": "pydantic-settings",
+      "version": "2.15.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "pydantic_core==2.46.4",
+      "line_number": 25,
+      "normalized_name": "pydantic-core",
+      "version": "2.46.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "Pygments==2.21.0",
+      "line_number": 26,
+      "normalized_name": "pygments",
+      "version": "2.21.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "PyJWT==2.14.0",
+      "line_number": 27,
+      "normalized_name": "pyjwt",
+      "version": "2.14.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "python-dateutil==2.9.0.post0",
+      "line_number": 28,
+      "normalized_name": "python-dateutil",
+      "version": "2.9.0.post0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "python-dotenv==1.2.3",
+      "line_number": 29,
+      "normalized_name": "python-dotenv",
+      "version": "1.2.3"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "qi-compute-api-client==0.63.0",
+      "line_number": 30,
+      "normalized_name": "qi-compute-api-client",
+      "version": "0.63.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "qiskit==2.3.1",
+      "line_number": 31,
+      "normalized_name": "qiskit",
+      "version": "2.3.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "qiskit-quantuminspire==0.18.4",
+      "line_number": 32,
+      "normalized_name": "qiskit-quantuminspire",
+      "version": "0.18.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "quantuminspire==4.0.0",
+      "line_number": 33,
+      "normalized_name": "quantuminspire",
+      "version": "4.0.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "requests==2.34.2",
+      "line_number": 34,
+      "normalized_name": "requests",
+      "version": "2.34.2"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "rich==15.0.0",
+      "line_number": 35,
+      "normalized_name": "rich",
+      "version": "15.0.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "rustworkx==0.18.1",
+      "line_number": 36,
+      "normalized_name": "rustworkx",
+      "version": "0.18.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "scipy==1.18.1",
+      "line_number": 37,
+      "normalized_name": "scipy",
+      "version": "1.18.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "shellingham==1.5.4",
+      "line_number": 38,
+      "normalized_name": "shellingham",
+      "version": "1.5.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "six==1.17.0",
+      "line_number": 39,
+      "normalized_name": "six",
+      "version": "1.17.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "stevedore==5.9.1",
+      "line_number": 40,
+      "normalized_name": "stevedore",
+      "version": "5.9.1"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "typer==0.27.2",
+      "line_number": 41,
+      "normalized_name": "typer",
+      "version": "0.27.2"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "typing-inspection==0.4.4",
+      "line_number": 42,
+      "normalized_name": "typing-inspection",
+      "version": "0.4.4"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "typing_extensions==4.16.0",
+      "line_number": 43,
+      "normalized_name": "typing-extensions",
+      "version": "4.16.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "urllib3==2.7.0",
+      "line_number": 44,
+      "normalized_name": "urllib3",
+      "version": "2.7.0"
+    },
+    {
+      "category": "exact pinned PyPI requirement",
+      "entry": "yarl==1.25.1",
+      "line_number": 45,
+      "normalized_name": "yarl",
+      "version": "1.25.1"
+    }
+  ],
+  "github_run_id": null,
+  "required_packages": {
+    "opensquirrel": {
+      "exact_match": true,
+      "observed_versions": [
+        "0.9.1"
+      ],
+      "present": true,
+      "required_version": "0.9.1"
+    },
+    "qi-compute-api-client": {
+      "exact_match": true,
+      "observed_versions": [
+        "0.63.0"
+      ],
+      "present": true,
+      "required_version": "0.63.0"
+    },
+    "qiskit": {
+      "exact_match": true,
+      "observed_versions": [
+        "2.3.1"
+      ],
+      "present": true,
+      "required_version": "2.3.1"
+    },
+    "qiskit-quantuminspire": {
+      "exact_match": true,
+      "observed_versions": [
+        "0.18.4"
+      ],
+      "present": true,
+      "required_version": "0.18.4"
+    },
+    "quantuminspire": {
+      "exact_match": true,
+      "observed_versions": [
+        "4.0.0"
+      ],
+      "present": true,
+      "required_version": "4.0.0"
+    }
+  },
+  "safety_assertions": {
+    "BACKEND_QUERY_ATTEMPTED": 0,
+    "HARDWARE_JOBS_CREATED": 0,
+    "PACKAGES_INSTALLED": 0,
+    "PROVIDER_AUTH_ATTEMPTED": 0,
+    "RESOLVER_INVOKED": 0,
+    "SECRETS_ADDED": 0,
+    "SECRETS_READ": 0,
+    "STAGE2R4B_STARTED": false,
+    "STAGE3A_RESTARTED": false
+  },
+  "source_file_git_commit": "ccaf9fc42d233cf8d08b8ff6089c967acad3372e",
+  "source_path": "runtime/qi/vendor/pip-freeze.txt",
+  "source_repository": "tajjali40/UPCT_QFM_CLOUD_EXECUTION",
+  "stage2r3_execution_commit": "36499b26980a63b544c9c01e4874e69d9e0a0997",
+  "verdict": "PASS_QCEC_STAGE2R4A_QI_FROZEN_PIP_LAYER_REPLAYABLE"
+}

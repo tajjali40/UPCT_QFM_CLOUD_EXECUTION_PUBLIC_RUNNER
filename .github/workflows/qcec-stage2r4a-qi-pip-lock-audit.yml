@@ -1,0 +1,69 @@
+name: QCEC Stage 2R4A QI Pip Lock Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - runtime/qi/vendor/pip-freeze.txt
+      - runtime/qi/vendor/QCEC_STAGE2R4A_PIP_LAYER_AUDIT.json
+      - runtime/qi/vendor/QCEC_STAGE2R4A_PIP_LAYER_AUDIT.txt
+      - scripts/qcec_stage2r4a_qi_pip_lock_audit.py
+      - .github/workflows/qcec-stage2r4a-qi-pip-lock-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit-frozen-qi-pip-layer:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGES_INSTALLED: "0"
+      RESOLVER_INVOKED: "0"
+      PROVIDER_AUTH_ATTEMPTED: "0"
+      BACKEND_QUERY_ATTEMPTED: "0"
+      HARDWARE_JOBS_CREATED: "0"
+      SECRETS_READ: "0"
+      SECRETS_ADDED: "0"
+      STAGE2R4B_STARTED: "FALSE"
+      STAGE3A_RESTARTED: "FALSE"
+      QCEC_AUDIT_GIT_COMMIT: ${{ github.sha }}
+    steps:
+      - name: Check out the public audit repository
+        uses: actions/checkout@v4
+
+      - name: Prove zero side-effect execution boundary
+        shell: bash
+        run: |
+          printf '%s\n' \
+            "PACKAGES_INSTALLED=${PACKAGES_INSTALLED}" \
+            "RESOLVER_INVOKED=${RESOLVER_INVOKED}" \
+            "PROVIDER_AUTH_ATTEMPTED=${PROVIDER_AUTH_ATTEMPTED}" \
+            "BACKEND_QUERY_ATTEMPTED=${BACKEND_QUERY_ATTEMPTED}" \
+            "HARDWARE_JOBS_CREATED=${HARDWARE_JOBS_CREATED}" \
+            "SECRETS_READ=${SECRETS_READ}" \
+            "SECRETS_ADDED=${SECRETS_ADDED}" \
+            "STAGE2R4B_STARTED=${STAGE2R4B_STARTED}" \
+            "STAGE3A_RESTARTED=${STAGE3A_RESTARTED}"
+          test "${PACKAGES_INSTALLED}" = "0"
+          test "${RESOLVER_INVOKED}" = "0"
+          test "${PROVIDER_AUTH_ATTEMPTED}" = "0"
+          test "${BACKEND_QUERY_ATTEMPTED}" = "0"
+          test "${HARDWARE_JOBS_CREATED}" = "0"
+          test "${SECRETS_READ}" = "0"
+          test "${SECRETS_ADDED}" = "0"
+          test "${STAGE2R4B_STARTED}" = "FALSE"
+          test "${STAGE3A_RESTARTED}" = "FALSE"
+
+      - name: Audit the recovered frozen pip layer
+        run: python scripts/qcec_stage2r4a_qi_pip_lock_audit.py
+
+      - name: Verify the allowed PASS verdict
+        run: >-
+          python -c "import json, pathlib;
+          r=json.loads(pathlib.Path('runtime/qi/vendor/QCEC_STAGE2R4A_PIP_LAYER_AUDIT.json').read_text(encoding='utf-8'));
+          assert r['verdict'] == 'PASS_QCEC_STAGE2R4A_QI_FROZEN_PIP_LAYER_REPLAYABLE';
+          assert all(v == 0 for k, v in r['safety_assertions'].items() if not isinstance(v, bool));
+          assert r['safety_assertions']['STAGE2R4B_STARTED'] is False;
+          assert r['safety_assertions']['STAGE3A_RESTARTED'] is False"
