@@ -1,0 +1,24 @@
+name: TDMGE Runner Heartbeat
+on:
+  push:
+    branches:
+      - tdmge-r2-g1-20261001
+permissions:
+  contents: write
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tdmge-r2-g1-20261001
+      - name: Write heartbeat
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'TDMGE_R2_G1_ACTIONS_HEARTBEAT\n%s\n%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" > TDMGE_R2_G1_ACTIONS_HEARTBEAT.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TDMGE_R2_G1_ACTIONS_HEARTBEAT.txt
+          git commit -m "TDMGE R2 G1 actions heartbeat"
+          git push origin HEAD:tdmge-r2-g1-20261001
